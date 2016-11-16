@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Client from './Client'
-import entities from 'html-entities'
+import {AllHtmlEntities as entities} from 'html-entities'
 
 class TaplistPanel extends Component {
   constructor() {

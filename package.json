@@ -24,6 +24,7 @@
     "server": "babel-node server.js"
   },
   "devDependencies": {
-    "html-entities": "^1.2.0"
+    "html-entities": "^1.2.0",
+    "mysql": "^2.12.0"
   }
 }
