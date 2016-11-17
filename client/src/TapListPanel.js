@@ -2,8 +2,11 @@ import React, { Component } from 'react'
 import Client from './Client'
 import {AllHtmlEntities as entities} from 'html-entities'
 
+const wallPaperLoadNext = 720000
+const wallPaperRefresh = 43200000
+
 const getRedditWallPapers = () => {
-	return fetch('https://www.reddit.com/r/wallpaper/top/.json?count=200', {
+	return fetch('https://www.reddit.com/r/wallpaper/.json?count=100', {
 		method: 'get'
 	}).then((response) => {
 		return response.json()
@@ -21,8 +24,12 @@ class TaplistPanel extends Component {
 	getRedditWallPapers().then((response) => {
 		let data = response.data.children
 		let urls = []
-		data.map((post, i) => {
-			urls.push({url: post.data.url, id: i})
+		let i = 0
+		data.map((post) => {
+			if (post.data.title.includes('1920')) {
+				urls.push({url: post.data.url, id: i})
+				i += 1
+			}
 		})
 		this.setState({wallpapers: urls}, () => {
 			this.changeWallPaper()
@@ -46,11 +53,11 @@ class TaplistPanel extends Component {
 
   	setInterval(() => {
   		this.getWallPapers()
-  	}, 43200000)
+  	}, wallPaperRefresh)
 
 	setInterval(() => {
   		this.changeWallPaper()
-  	}, 720000)
+  	}, wallPaperLoadNext)
    }
   render() {
   	const {configs, activetaps} = this.state
