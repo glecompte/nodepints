@@ -2,10 +2,37 @@ import React, { Component } from 'react'
 import Client from './Client'
 import {AllHtmlEntities as entities} from 'html-entities'
 
+const getRedditWallPapers = () => {
+	return fetch('https://www.reddit.com/r/wallpaper/top/.json?count=200', {
+		method: 'get'
+	}).then((response) => {
+		return response.json()
+	}).catch((err) => {
+		console.log(err)
+	})
+}
+
 class TaplistPanel extends Component {
   constructor() {
   	super()
   	this.state = {config: [], activetaps: []}
+  }
+  getWallPapers() {
+	getRedditWallPapers().then((response) => {
+		let data = response.data.children
+		let urls = []
+		data.map((post, i) => {
+			urls.push({url: post.data.url, id: i})
+		})
+		this.setState({wallpapers: urls}, () => {
+			this.changeWallPaper()
+		})
+  	})
+  }
+  changeWallPaper() {
+  	let nextId = this.state.currentWallPaper ? this.state.currentWallPaper.id + 1 : 0
+  	let nextWallPaper = this.state.wallpapers.find((paper) => paper.id === nextId)
+  	this.setState({currentWallPaper: nextWallPaper})
   }
   componentDidMount() {
    	Client.getApi('config', (response) => {
@@ -14,6 +41,16 @@ class TaplistPanel extends Component {
   	Client.getApi('activetaps', (response) => {
   		this.setState({activetaps: response})
   	})
+
+	this.getWallPapers()
+
+  	setInterval(() => {
+  		this.getWallPapers()
+  	}, 43200000)
+
+	setInterval(() => {
+  		this.changeWallPaper()
+  	}, 720000)
    }
   render() {
   	const {configs, activetaps} = this.state
@@ -23,8 +60,11 @@ class TaplistPanel extends Component {
   		return config.configValue
   	}
 
+  	if (!this.state.currentWallPaper || !this.state.activetaps || !this.state.configs)
+  		return null
+
     return (
-		<div className="bodywrapper">
+		<div className="bodywrapper" style={{backgroundImage: `url(${this.state.currentWallPaper.url})`}}>
             <div className="header clearfix">
                 <div className="HeaderLeft">
 					<a href="admin/admin.php"><img src={getConfigValue('logoUrl')} height="100" alt="" /></a>
@@ -101,10 +141,10 @@ class TaplistPanel extends Component {
 							abvIndicator.push(<div class="abv-offthechart"></div>)
 						}
 
-						return (<tr key={i} className="beerRow" id={beer.id}>
+						return (<tr key={i} className="beerRow" id={i}>
 								{ getConfigValue('showTapNumCol') && 
 									<td className="tap-num">
-										<span className="tapcircle">1</span>
+										<span className="tapcircle">{i + 1}</span>
 									</td>
 								}
 							
