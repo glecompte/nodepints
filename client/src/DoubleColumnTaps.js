@@ -1,49 +1,11 @@
 import React, { Component } from 'react'
 import cn from 'classnames'
 import {AllHtmlEntities as entities} from 'html-entities'
+import {getBeerData} from './utils'
 
 const DoubleColumnTaps = (props) => {
-	const {activetaps, configs} = props
-	const getConfigValue = (configName) => {
-		if (!configs) return null
-		let config = configs.find((config) => config.configName === configName)
-		return config.configValue
-	}
-
-	const getBeerData = (beer) => {
-		const srmBackgroundColor = beer.srmRgb ? `rgb(${beer.srmRgb})` : 'rgb(0,0,0)'
-		const ibuHeight = beer.ibuAct > 100 ? 100 : beer.ibuAct
-		let calFromAlc = (1881.22 * beer.fgAct * (beer.ogAct - beer.fgAct)) / (1.775 - beer.ogAct)
-		let calFromCarbs = 3550.0 * beer.fgAct * ((0.1808 * beer.ogAct) + (0.8192 * beer.fgAct) - 1.0004)
-		if (beer.ogAct === 1 && beer.fgAct === 1) {
-			calFromAlc = 0
-			calFromCarbs = 0
-		}
-		const kCal = Math.round(calFromAlc + calFromCarbs)
-		const abv = (beer.ogAct - beer.fgAct) * 131
-
-		let abvIndicator = []
-		let remaining = abv * 20
-		let numCups = 0
-		do {
-		   let level = 0
-		   if (remaining < 100)
-		   	level = remaining
-		   else 
-		   	level = 100
-
-		   remaining = remaining - level
-		   numCups += 1
-		   abvIndicator.push(<div key={numCups} className="abv-indicator"><div className="abv-full" style={{height: level}}></div></div>)
-		} while (remaining > 0 && numCups < 2)
-
-		if (remaining > 0) {
-			abvIndicator.push(<div class="abv-offthechart"></div>)
-		}
-
-		return { srmBackgroundColor, ibuHeight, calFromCarbs, calFromAlc, kCal, abv, abvIndicator }
-	}
-
+	const {activetaps, config} = props
+	
 	const getRows = () => {
 		let rows = []
 		for (var i = 1; i <= 4; i++) {
@@ -56,13 +18,13 @@ const DoubleColumnTaps = (props) => {
 			rows.push(
 				<tr key={i} className={cn({'altrow': i%2>0})} id={i}>
 					
-						{ getConfigValue('showTapNumCol') && 
+						{ config.showTapNumCol && 
 							<td className="tap-num">
 								<span className="tapcircle">{i + 1}</span>
 							</td>
 						}
 					
-						{ getConfigValue('showSrmCol') && 
+						{ config.showSrmCol && 
 							<td className="srm">
 								<h3>{beer.ogAct} OG</h3>
 								
@@ -75,7 +37,7 @@ const DoubleColumnTaps = (props) => {
 							</td>
 						}
 					
-						{ getConfigValue('showIbuCol') && 
+						{ config.showIbuCol && 
 							<td className="ibu">
 								<h3>
 									{
@@ -99,7 +61,7 @@ const DoubleColumnTaps = (props) => {
 							<p>{beer.notes}</p>
 						</td>
 					
-						{ getConfigValue('showAbvCol') && getConfigValue('showAbvImg') &&
+						{ config.showAbvCol && config.showAbvImg &&
 						
 							<td className="abv">
 								<h3>
@@ -114,7 +76,7 @@ const DoubleColumnTaps = (props) => {
 							</td>
 						}
 
-						{ getConfigValue('showAbvCol') && !getConfigValue('showAbvImg') &&
+						{ config.showAbvCol && !config.showAbvImg &&
 							<td className="abv">
 								<h3>
 								</h3>
@@ -130,13 +92,13 @@ const DoubleColumnTaps = (props) => {
 							<div style={{width:200}} />						
 						</td>
 
-						{ getConfigValue('showTapNumCol') && 
+						{ config.showTapNumCol && 
 							<td className="tap-num">
 								<span className="tapcircle">{i + 4}</span>
 							</td>
 						}
 					
-						{ getConfigValue('showSrmCol') && 
+						{ config.showSrmCol && 
 							<td className="srm">
 								<h3>{beer2.ogAct} OG</h3>
 								
@@ -149,7 +111,7 @@ const DoubleColumnTaps = (props) => {
 							</td>
 						}
 					
-						{ getConfigValue('showIbuCol') && 
+						{ config.showIbuCol && 
 							<td className="ibu">
 								<h3>
 									{
@@ -173,7 +135,7 @@ const DoubleColumnTaps = (props) => {
 							<p>{beer2.notes}</p>
 						</td>
 					
-						{ getConfigValue('showAbvCol') && getConfigValue('showAbvImg') &&
+						{ config.showAbvCol && config.showAbvImg &&
 						
 							<td className="abv">
 								<h3>
@@ -188,7 +150,7 @@ const DoubleColumnTaps = (props) => {
 							</td>
 						}
 
-						{ getConfigValue('showAbvCol') && !getConfigValue('showAbvImg') &&
+						{ config.showAbvCol && !config.showAbvImg &&
 							<td className="abv">
 								<h3>
 								</h3>

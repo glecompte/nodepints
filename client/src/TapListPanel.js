@@ -18,11 +18,10 @@ const getRedditWallPapers = () => {
 	})
 }
 
-
 class TaplistPanel extends Component {
   constructor() {
   	super()
-  	this.state = {config: [], activetaps: []}
+  	this.state = {configs: [], activetaps: []}
   }
   getWallPapers() {
 	getRedditWallPapers().then((response) => {
@@ -65,27 +64,22 @@ class TaplistPanel extends Component {
    }
   render() {
   	const {configs, activetaps} = this.state
-
-	const getConfigValue = (configName) => {
-		if (!configs) return null
-		let config = configs.find((config) => config.configName === configName)
-		return config.configValue
-	}
+	let config = configs.reduce((_,x) =>  ({..._, [x.configName]: x.configValue }), {})
 
 	const headers = (
 			<tr>
-					{ getConfigValue('showTapNumCol') && 
+					{ config.showTapNumCol && 
 						<th className="tap-num">
 							TAP<br />#
 						</th>
 					}
-					{ getConfigValue('showSrmCol') && 
+					{ config.showSrmCol && 
 						<th className="srm">
 							GRAVITY<hr />COLOR
 						</th>
 					}
 					
-					{ getConfigValue('showIbuCol') && 
+					{ config.showIbuCol && 
 						<th className="ibu">
 							BALANCE<hr />BITTERNESS
 						</th>
@@ -95,7 +89,7 @@ class TaplistPanel extends Component {
 						BEER NAME &nbsp; & &nbsp; STYLE<hr />TASTING NOTES
 					</th>
 					
-					{ getConfigValue('showAbvCol') && 
+					{ config.showAbvCol && 
 						<th className="abv">				
 							CALORIES<hr />ALCOHOL
 						</th>
@@ -105,18 +99,18 @@ class TaplistPanel extends Component {
 
 	const doubleHeaders = (
 			<tr>
-					{ getConfigValue('showTapNumCol') && 
+					{ config.showTapNumCol && 
 						<th className="tap-num">
 							TAP<br />#
 						</th>
 					}
-					{ getConfigValue('showSrmCol') && 
+					{ config.showSrmCol && 
 						<th className="srm">
 							GRAVITY<hr />COLOR
 						</th>
 					}
 					
-					{ getConfigValue('showIbuCol') && 
+					{ config.showIbuCol && 
 						<th className="ibu">
 							BALANCE<hr />BITTERNESS
 						</th>
@@ -126,7 +120,7 @@ class TaplistPanel extends Component {
 						BEER NAME &nbsp; & &nbsp; STYLE<hr />TASTING NOTES
 					</th>
 					
-					{ getConfigValue('showAbvCol') && 
+					{ config.showAbvCol && 
 						<th className="abv">				
 							CALORIES<hr />ALCOHOL
 						</th>
@@ -134,18 +128,18 @@ class TaplistPanel extends Component {
 
 					<th style={{height:60}}></th>
 
-					{ getConfigValue('showTapNumCol') && 
+					{ config.showTapNumCol && 
 						<th className="tap-num">
 							TAP<br />#
 						</th>
 					}
-					{ getConfigValue('showSrmCol') && 
+					{ config.showSrmCol && 
 						<th className="srm">
 							GRAVITY<hr />COLOR
 						</th>
 					}
 					
-					{ getConfigValue('showIbuCol') && 
+					{ config.showIbuCol && 
 						<th className="ibu">
 							BALANCE<hr />BITTERNESS
 						</th>
@@ -155,7 +149,7 @@ class TaplistPanel extends Component {
 						BEER NAME &nbsp; & &nbsp; STYLE<hr />TASTING NOTES
 					</th>
 					
-					{ getConfigValue('showAbvCol') && 
+					{ config.showAbvCol && 
 						<th className="abv">				
 							CALORIES<hr />ALCOHOL
 						</th>
@@ -165,15 +159,14 @@ class TaplistPanel extends Component {
   	if (!this.state.currentWallPaper || !this.state.activetaps || !this.state.configs)
   		return null
 
-
     return (
 		<div className="bodywrapper" style={{backgroundImage: `url(${this.state.currentWallPaper.url})`}}>
             <div className="header clearfix">
                 <div className="HeaderLeft">
-					<a href="admin/admin.php"><img src={getConfigValue('logoUrl')} height="100" alt="" /></a>
+					<a href="admin/admin.php"><img src={config.logoUrl} height="100" alt="" /></a>
                 </div>
                 <div className="HeaderCenter">
-                    <h1 id="HeaderTitle">{getConfigValue('headerText')}</h1>
+                    <h1 id="HeaderTitle">{config.headerText}</h1>
                 </div>
                 <div className="HeaderRight">
 					<a href="http://www.raspberrypints.com"><img src="img/RaspberryPints.png" height="100" alt="" /></a>
@@ -186,8 +179,8 @@ class TaplistPanel extends Component {
 						singleColumn ? headers : doubleHeaders
 					}
 				</thead>
-				{ singleColumn ? <SingleColumnTaps activetaps={activetaps} configs={configs} />	 :
-				  <DoubleColumnTaps activetaps={activetaps} configs={configs} />	
+				{ singleColumn ? <SingleColumnTaps activetaps={activetaps} config={config} />	 :
+				  <DoubleColumnTaps activetaps={activetaps} config={config} />	
 				}
 			</table>
 		</div>
