@@ -2,9 +2,11 @@ import React, { Component } from 'react'
 import Client from './Client'
 import cn from 'classnames'
 import SingleColumnTaps from './SingleColumnTaps'
+import DoubleColumnTaps from './DoubleColumnTaps'
 
 const wallPaperLoadNext = 720000
 const wallPaperRefresh = 43200000
+const singleColumn = false
 
 const getRedditWallPapers = () => {
 	return fetch('https://www.reddit.com/r/wallpaper/.json?count=100', {
@@ -70,8 +72,99 @@ class TaplistPanel extends Component {
 		return config.configValue
 	}
 
+	const headers = (
+			<tr>
+					{ getConfigValue('showTapNumCol') && 
+						<th className="tap-num">
+							TAP<br />#
+						</th>
+					}
+					{ getConfigValue('showSrmCol') && 
+						<th className="srm">
+							GRAVITY<hr />COLOR
+						</th>
+					}
+					
+					{ getConfigValue('showIbuCol') && 
+						<th className="ibu">
+							BALANCE<hr />BITTERNESS
+						</th>
+					}
+					
+					<th className="name">
+						BEER NAME &nbsp; & &nbsp; STYLE<hr />TASTING NOTES
+					</th>
+					
+					{ getConfigValue('showAbvCol') && 
+						<th className="abv">				
+							CALORIES<hr />ALCOHOL
+						</th>
+					}
+			</tr>)
+
+
+	const doubleHeaders = (
+			<tr>
+					{ getConfigValue('showTapNumCol') && 
+						<th className="tap-num">
+							TAP<br />#
+						</th>
+					}
+					{ getConfigValue('showSrmCol') && 
+						<th className="srm">
+							GRAVITY<hr />COLOR
+						</th>
+					}
+					
+					{ getConfigValue('showIbuCol') && 
+						<th className="ibu">
+							BALANCE<hr />BITTERNESS
+						</th>
+					}
+					
+					<th className="name">
+						BEER NAME &nbsp; & &nbsp; STYLE<hr />TASTING NOTES
+					</th>
+					
+					{ getConfigValue('showAbvCol') && 
+						<th className="abv">				
+							CALORIES<hr />ALCOHOL
+						</th>
+					}
+
+					<th style={{height:60}}></th>
+
+					{ getConfigValue('showTapNumCol') && 
+						<th className="tap-num">
+							TAP<br />#
+						</th>
+					}
+					{ getConfigValue('showSrmCol') && 
+						<th className="srm">
+							GRAVITY<hr />COLOR
+						</th>
+					}
+					
+					{ getConfigValue('showIbuCol') && 
+						<th className="ibu">
+							BALANCE<hr />BITTERNESS
+						</th>
+					}
+					
+					<th className="name">
+						BEER NAME &nbsp; & &nbsp; STYLE<hr />TASTING NOTES
+					</th>
+					
+					{ getConfigValue('showAbvCol') && 
+						<th className="abv">				
+							CALORIES<hr />ALCOHOL
+						</th>
+					}
+			</tr>)
+
   	if (!this.state.currentWallPaper || !this.state.activetaps || !this.state.configs)
   		return null
+
 
     return (
 		<div className="bodywrapper" style={{backgroundImage: `url(${this.state.currentWallPaper.url})`}}>
@@ -89,36 +182,13 @@ class TaplistPanel extends Component {
 			
 			<table>
 				<thead>
-					<tr>
-						{ getConfigValue('showTapNumCol') && 
-							<th className="tap-num">
-								TAP<br />#
-							</th>
-						}
-						{ getConfigValue('showSrmCol') && 
-							<th className="srm">
-								GRAVITY<hr />COLOR
-							</th>
-						}
-						
-						{ getConfigValue('showIbuCol') && 
-							<th className="ibu">
-								BALANCE<hr />BITTERNESS
-							</th>
-						}
-						
-						<th className="name">
-							BEER NAME &nbsp; & &nbsp; STYLE<hr />TASTING NOTES
-						</th>
-						
-						{ getConfigValue('showAbvCol') && 
-							<th className="abv">				
-								CALORIES<hr />ALCOHOL
-							</th>
-						}
-					</tr>
-                </thead>
-				<SingleColumnTaps activetaps={activetaps} configs={configs} />	
+					{
+						singleColumn ? headers : doubleHeaders
+					}
+				</thead>
+				{ singleColumn ? <SingleColumnTaps activetaps={activetaps} configs={configs} />	 :
+				  <DoubleColumnTaps activetaps={activetaps} configs={configs} />	
+				}
 			</table>
 		</div>
     )
