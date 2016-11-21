@@ -8,7 +8,7 @@ const DoubleColumnTaps = (props) => {
 	
 	const getRows = () => {
 		let rows = []
-		for (var i = 1; i <= 4; i++) {
+		for (var i = 0; i < 4; i++) {
 			let beer = activetaps[i]
 			let beer2 = activetaps[i + 4]
 
@@ -20,7 +20,7 @@ const DoubleColumnTaps = (props) => {
 					
 						{ config.showTapNumCol && 
 							<td className="tap-num">
-								<span className="tapcircle">{i}</span>
+								<span className="tapcircle">{i+1}</span>
 							</td>
 						}
 					
@@ -94,7 +94,7 @@ const DoubleColumnTaps = (props) => {
 
 						{ config.showTapNumCol && 
 							<td className="tap-num">
-								<span className="tapcircle">{i + 4}</span>
+								<span className="tapcircle">{i + 5}</span>
 							</td>
 						}
 					

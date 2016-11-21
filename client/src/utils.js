@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 
 export const getBeerData = (beer) => {
+	if (!beer)
+		return
+	
 	const srmBackgroundColor = beer.srmRgb ? `rgb(${beer.srmRgb})` : 'rgb(0,0,0)'
 	const ibuHeight = beer.ibuAct > 100 ? 100 : beer.ibuAct
 	let calFromAlc = (1881.22 * beer.fgAct * (beer.ogAct - beer.fgAct)) / (1.775 - beer.ogAct)

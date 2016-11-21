@@ -4,7 +4,7 @@ import cn from 'classnames'
 import SingleColumnTaps from './SingleColumnTaps'
 import DoubleColumnTaps from './DoubleColumnTaps'
 
-const wallPaperLoadNext = 720000
+const wallPaperLoadNext = 40000
 const wallPaperRefresh = 43200000
 const singleColumn = false
 
