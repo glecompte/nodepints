@@ -88,8 +88,7 @@ const DoubleColumnTaps = (props) => {
 								<h2>{beerData.abv.toFixed(1)}% ABV</h2>
 							</td>
 						}
-						<td>
-							<div style={{width:200}} />						
+						<td>					
 						</td>
 
 						{ config.showTapNumCol && 
