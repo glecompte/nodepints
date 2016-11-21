@@ -20,7 +20,7 @@ const DoubleColumnTaps = (props) => {
 					
 						{ config.showTapNumCol && 
 							<td className="tap-num">
-								<span className="tapcircle">{i + 1}</span>
+								<span className="tapcircle">{i}</span>
 							</td>
 						}
 					

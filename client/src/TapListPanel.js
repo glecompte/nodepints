@@ -159,18 +159,12 @@ class TaplistPanel extends Component {
   	if (!this.state.currentWallPaper || !this.state.activetaps || !this.state.configs)
   		return null
 
+  	const backgroundStyle = {backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${this.state.currentWallPaper.url})`}
+  	
     return (
-		<div className="bodywrapper" style={{backgroundImage: `url(${this.state.currentWallPaper.url})`}}>
+		<div className="bodywrapper" style={backgroundStyle}>
             <div className="header clearfix">
-                <div className="HeaderLeft">
-					<a href="admin/admin.php"><img src={config.logoUrl} height="100" alt="" /></a>
-                </div>
-                <div className="HeaderCenter">
-                    <h1 id="HeaderTitle">{config.headerText}</h1>
-                </div>
-                <div className="HeaderRight">
-					<a href="http://www.raspberrypints.com"><img src="img/RaspberryPints.png" height="100" alt="" /></a>
-                </div>
+					<a href="admin/admin.php"><img src={config.logoUrl} style={{height:'100%', width: '100%'}} alt="" /></a>         
             </div>
 			
 			<table>
@@ -183,6 +177,7 @@ class TaplistPanel extends Component {
 				  <DoubleColumnTaps activetaps={activetaps} config={config} />	
 				}
 			</table>
+			<div style={{fontSize: 11}}>Refridgeration Temperature: 37.76F</div>
 		</div>
     )
   }
