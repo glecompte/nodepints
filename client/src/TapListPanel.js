@@ -177,7 +177,7 @@ class TaplistPanel extends Component {
 				  <DoubleColumnTaps activetaps={activetaps} config={config} />	
 				}
 			</table>
-			<div style={{fontSize: 11}}>Refridgeration Temperature: 37.76F</div>
+			<div style={{fontSize: 11, textAlign: 'center'}}>Refridgeration Temperature: 37.76F</div>
 		</div>
     )
   }

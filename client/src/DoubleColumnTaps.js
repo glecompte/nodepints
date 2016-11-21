@@ -163,7 +163,7 @@ const DoubleColumnTaps = (props) => {
 							</td>
 						}
 						<td>
-							<div style={{width:200}} />						
+											
 						</td>
 				</tr>)
 		}
